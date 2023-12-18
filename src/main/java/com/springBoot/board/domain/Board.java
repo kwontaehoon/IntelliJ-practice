@@ -1,4 +1,4 @@
-package com.springBoot.board.entity;
+package com.springBoot.board.domain;
 
 import lombok.Data;
 import jakarta.persistence.Entity;
@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 @Entity
 @Data
 public class Board {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;

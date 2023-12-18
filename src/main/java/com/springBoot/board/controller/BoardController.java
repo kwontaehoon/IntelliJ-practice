@@ -1,6 +1,6 @@
 package com.springBoot.board.controller;
 
-import com.springBoot.board.entity.Board;
+import com.springBoot.board.domain.Board;
 import com.springBoot.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -1,6 +1,6 @@
 package com.springBoot.board.service;
 
-import com.springBoot.board.entity.Board;
+import com.springBoot.board.domain.Board;
 import com.springBoot.board.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
