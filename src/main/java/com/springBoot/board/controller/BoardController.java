@@ -10,13 +10,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@RestController
+@Controller
+//@RestController
 public class BoardController {
     @Autowired
     private BoardService boardService;
 
     @GetMapping("/board/write") // localhost:8080/board/write
     public String boardWriteForm() {
+
         return "boardWrite";
     }
 
@@ -26,20 +28,20 @@ public class BoardController {
         return "boardList";
     }
 
-    @GetMapping("board/test")
-    public Integer boardTest(BoardDTO boardDTO) {
-        int id = boardDTO.getId();
-        return id;
-    }
-
-    @PostMapping("board/postTest")
-    public BoardDTO boardPostTest(@RequestBody BoardDTO boardDTO) {
-        BoardDTO board = new BoardDTO();
-        board.setId(board.getId());
-        board.setTitle(board.getTitle());
-        board.setContent(board.getContent());
-        return boardDTO;
-    }
+//    @GetMapping("board/test")
+//    public Integer boardTest(BoardDTO boardDTO) {
+//        int id = boardDTO.getId();
+//        return id;
+//    }
+//
+//    @PostMapping("board/postTest")
+//    public BoardDTO boardPostTest(@RequestBody BoardDTO boardDTO) {
+//        BoardDTO board = new BoardDTO();
+//        board.setId(board.getId());
+//        board.setTitle(board.getTitle());
+//        board.setContent(board.getContent());
+//        return boardDTO;
+//    }
 
     @GetMapping("board/view")
     public String boardView(Model model, @RequestParam(name = "id") Integer id) {
@@ -48,8 +50,34 @@ public class BoardController {
     }
 
     @PostMapping("/board/writePro")
-    public String boardWritePro(Board board) {
+    public String boardWritePro(Board board, Model model) {
         boardService.write(board);
-        return "test";
+
+        model.addAttribute("message", " 글 작성이 완료되었습니다.");
+        model.addAttribute("searchUrl", "/board/list");
+        return "message";
+    }
+
+    @GetMapping("/board/delete")
+    public String boardDelete(Integer id) {
+
+        boardService.boardDelete(id);
+
+        return "redirect:/board/list";
+    }
+
+    @GetMapping("/board/modify")
+    public String boardModify(@PathVariable("id") Integer id, Model model) {
+        model.addAttribute("board", boardService.boardView(id));
+        return "boardModify";
+    }
+
+    @PostMapping("board/update/{id}")
+    public String boardUpdate(@PathVariable("id") Integer id, Board board) {
+        Board boardTemp = boardService.boardView(id);
+        boardTemp.setTitle(board.getTitle());
+        boardTemp.setContent(board.getContent());
+
+        return "redirect:/board/list";
     }
 }
