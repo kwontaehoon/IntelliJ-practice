@@ -1,5 +1,6 @@
 package com.springBoot.board.domain;
 
+import lombok.Builder;
 import lombok.Data;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,7 +9,7 @@ import jakarta.persistence.Id;
 
 
 @Entity
-@Data
+@Builder
 public class Board {
 
     @Id
