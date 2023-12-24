@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@Controller
-//@RestController
+//@Controller
+@RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class BoardController {
     @Autowired
     private BoardService boardService;
@@ -28,20 +29,19 @@ public class BoardController {
         return "boardList";
     }
 
-//    @GetMapping("board/test")
-//    public Integer boardTest(BoardDTO boardDTO) {
-//        int id = boardDTO.getId();
-//        return id;
-//    }
-//
-//    @PostMapping("board/postTest")
-//    public BoardDTO boardPostTest(@RequestBody BoardDTO boardDTO) {
-//        BoardDTO board = new BoardDTO();
-//        board.setId(board.getId());
-//        board.setTitle(board.getTitle());
-//        board.setContent(board.getContent());
-//        return boardDTO;
-//    }
+    @GetMapping("board/test")
+    public Integer boardTest(BoardDTO boardDTO) {
+        return 123;
+    }
+
+    @PostMapping("board/postTest")
+    public BoardDTO boardPostTest(@RequestBody BoardDTO boardDTO) {
+        BoardDTO board = new BoardDTO();
+        board.setId(board.getId());
+        board.setTitle(board.getTitle());
+        board.setContent(board.getContent());
+        return boardDTO;
+    }
 
     @GetMapping("board/view")
     public String boardView(Model model, @RequestParam(name = "id") Integer id) {
