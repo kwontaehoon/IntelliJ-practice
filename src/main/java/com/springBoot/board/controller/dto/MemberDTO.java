@@ -7,13 +7,9 @@ public class MemberDTO {
 
     private Integer id;
 
+    private String password;
+
     private String name;
 
-    private Short age;
-
-    private String phoneNumber;
-
-    private String address;
-
-    private String addressDetails;
+    private String email;
 }

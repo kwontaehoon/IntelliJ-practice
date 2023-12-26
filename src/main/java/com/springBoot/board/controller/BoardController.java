@@ -12,8 +12,8 @@ import java.util.*;
 
 //@Controller
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 public class BoardController {
+
     @Autowired
     private BoardService boardService;
 
@@ -37,9 +37,9 @@ public class BoardController {
     @PostMapping("board/postTest")
     public BoardDTO boardPostTest(@RequestBody BoardDTO boardDTO) {
         BoardDTO board = new BoardDTO();
-        board.setId(board.getId());
-        board.setTitle(board.getTitle());
-        board.setContent(board.getContent());
+//        board.setId(board.getId());
+//        board.setTitle(board.getTitle());
+//        board.setContent(board.getContent());
         return boardDTO;
     }
 
