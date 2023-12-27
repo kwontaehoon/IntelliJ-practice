@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class MemberController {
 
@@ -21,13 +23,8 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public String join(Member member) {
+    public String join(MemberDTO memberDTO) {
         return "string";
-    }
-
-    @PostMapping("/test")
-    public ResponseEntity<MessageDTO> test (@RequestBody MemberDTO memberDTO) {
-        return memberService.signup(memberDTO);
     }
 
     /**
@@ -37,9 +34,9 @@ public class MemberController {
      * @return responseEntity
      **/
     @PostMapping("/signup")
-    public MemberDTO signup (@RequestBody MemberDTO memberDTO) {
-        memberService.signup(memberDTO);
-        return memberDTO;
+    public ResponseEntity<MessageDTO> signup (@RequestBody Member member) {
+        System.out.println("MemberDTO: " + member);
+        return  memberService.signup(member);
     }
 
     /**
@@ -49,9 +46,13 @@ public class MemberController {
      * @return responseEntity
      **/
     @GetMapping("/id")
-    public String idCheck (@RequestParam Integer id) {
-        memberService.idCheck(id);
-        return "";
+    public ResponseEntity<MessageDTO> idCheck (@RequestParam Integer id) {
+        return memberService.idCheck(id);
+    }
+
+    @GetMapping("/findAll")
+    public List<Member> findAll () {
+        return memberService.findAll();
     }
 
 }

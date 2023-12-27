@@ -4,23 +4,22 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Builder;
+import lombok.Data;
 
 @Entity
-@Builder
+@Data
 public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private String userId;
+
+    private String password;
+
     private String name;
 
-    private Short age;
+    private String email;
 
-    private String phoneNumber;
-
-    private String address;
-
-    private String addressDetails;
 }
