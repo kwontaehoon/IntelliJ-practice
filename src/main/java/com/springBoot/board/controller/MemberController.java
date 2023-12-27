@@ -2,8 +2,6 @@ package com.springBoot.board.controller;
 
 import com.springBoot.board.controller.dto.MemberDTO;
 import com.springBoot.board.controller.dto.MessageDTO;
-import com.springBoot.board.controller.dto.ToDoListDTO;
-import com.springBoot.board.domain.Member;
 import com.springBoot.board.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,25 +32,18 @@ public class MemberController {
      * @return responseEntity
      **/
     @PostMapping("/signup")
-    public ResponseEntity<MessageDTO> signup (@RequestBody Member member) {
-        System.out.println("MemberDTO: " + member);
-        return  memberService.signup(member);
+    public ResponseEntity<MessageDTO> signup (@RequestBody MemberDTO memberDTO) {
+        return  memberService.signup(memberDTO);
     }
 
     /**
-     * 아이디 찾기
+     * 중복 아이디 찾기
      *
      * @params id
      * @return responseEntity
      **/
-    @GetMapping("/id")
-    public ResponseEntity<MessageDTO> idCheck (@RequestParam Integer id) {
-        return memberService.idCheck(id);
+    @GetMapping("/idCheck")
+    public ResponseEntity<MessageDTO> idCheck (@RequestParam String userId) {
+        return memberService.idCheck(userId);
     }
-
-    @GetMapping("/findAll")
-    public List<Member> findAll () {
-        return memberService.findAll();
-    }
-
 }
