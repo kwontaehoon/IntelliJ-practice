@@ -8,8 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-//@RestController
+//@Controller
+@RestController
 public class BoardController {
 
     @Autowired
@@ -34,7 +34,7 @@ public class BoardController {
 
     @PostMapping("/board/postTest")
     public BoardDTO boardPostTest(@RequestBody BoardDTO boardDTO) {
-        BoardDTO board = new BoardDTO();
+//        BoardDTO board = new BoardDTO();
 //        board.setId(board.getId());
 //        board.setTitle(board.getTitle());
 //        board.setContent(board.getContent());

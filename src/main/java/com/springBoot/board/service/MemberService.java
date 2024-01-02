@@ -1,4 +1,5 @@
 package com.springBoot.board.service;
+import com.springBoot.board.controller.dto.LoginDTO;
 import com.springBoot.board.controller.dto.MemberDTO;
 import com.springBoot.board.controller.dto.MessageDTO;
 import com.springBoot.board.domain.Member;
@@ -6,6 +7,9 @@ import com.springBoot.board.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MemberService {
@@ -47,6 +51,28 @@ public class MemberService {
             messageDTO.setStatus("success");
             messageDTO.setMessage("중복된 아이디가 없습니다.");
         }
+        return ResponseEntity.ok().body(messageDTO);
+    }
+
+    /**
+     * 로그인
+     *
+     * @params
+     * @return
+     **/
+    public ResponseEntity<MessageDTO> login(MemberDTO memberDTO) {
+        MessageDTO messageDTO = new MessageDTO();
+
+        Optional<MemberDTO> storedMember = memberRepository.findByUserId(memberDTO.getUserId());
+
+        if(storedMember.isPresent() && memberDTO.getPassword().equals(storedMember.get().getPassword())) {
+            messageDTO.setStatus("success");
+            messageDTO.setMessage("로그인 성공");
+        }else{
+            messageDTO.setStatus("error");
+            messageDTO.setMessage("등록된 회원이 없습니다.");
+        }
+
         return ResponseEntity.ok().body(messageDTO);
     }
 }

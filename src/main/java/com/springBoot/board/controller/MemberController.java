@@ -1,5 +1,6 @@
 package com.springBoot.board.controller;
 
+import com.springBoot.board.controller.dto.LoginDTO;
 import com.springBoot.board.controller.dto.MemberDTO;
 import com.springBoot.board.controller.dto.MessageDTO;
 import com.springBoot.board.service.MemberService;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class MemberController {
@@ -45,5 +47,16 @@ public class MemberController {
     @GetMapping("/idCheck")
     public ResponseEntity<MessageDTO> idCheck (@RequestParam String userId) {
         return memberService.idCheck(userId);
+    }
+
+    /**
+     * 로그인
+     * 
+     * @params
+     * @return 
+     **/
+    @PostMapping("/login")
+    public ResponseEntity<MessageDTO> login (@RequestBody MemberDTO memberDTO) {
+        return memberService.login(memberDTO);
     }
 }
