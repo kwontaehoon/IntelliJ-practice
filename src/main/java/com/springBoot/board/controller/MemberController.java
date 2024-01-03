@@ -1,15 +1,12 @@
 package com.springBoot.board.controller;
 
-import com.springBoot.board.controller.dto.LoginDTO;
 import com.springBoot.board.controller.dto.MemberDTO;
 import com.springBoot.board.controller.dto.MessageDTO;
 import com.springBoot.board.service.MemberService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class MemberController {
@@ -39,7 +36,7 @@ public class MemberController {
     }
 
     /**
-     * 중복 아이디 찾기
+     * 중복 아이디 확인
      *
      * @params id
      * @return responseEntity
@@ -58,5 +55,27 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<MessageDTO> login (@RequestBody MemberDTO memberDTO) {
         return memberService.login(memberDTO);
+    }
+
+    /**
+     * 아이디 찾기
+     *
+     * @params
+     * @return
+     **/
+    @PostMapping("/idSearch")
+    public ResponseEntity<MessageDTO> idSearch(@RequestBody MemberDTO memberDTO) {
+        return memberService.idSearch(memberDTO);
+    }
+
+    /**
+     * 비밀번호 찾기
+     *
+     * @params
+     * @return
+     **/
+    @PostMapping("/pwdSearch")
+    public ResponseEntity<MessageDTO> pwdSearch(@RequestBody MemberDTO memberDTO) {
+        return memberService.pwdSearch(memberDTO);
     }
 }
