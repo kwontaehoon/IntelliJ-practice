@@ -5,6 +5,7 @@ import com.springBoot.board.domain.Member;
 import com.springBoot.board.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,6 +16,9 @@ public class MemberService {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     /**
      * 회원가입
      * 
@@ -23,13 +27,15 @@ public class MemberService {
      **/
     public ResponseEntity<MessageDTO> signup(MemberDTO memberDTO) {
         MessageDTO messageDTO = new MessageDTO();
+
         Member member = Member.builder()
                 .userId(memberDTO.getUserId())
-                .password(memberDTO.getPassword())
+                .password(bCryptPasswordEncoder.encode(memberDTO.getPassword()))
                 .name(memberDTO.getName())
                 .email(memberDTO.getEmail())
                 .build();
         memberRepository.save(member);
+
         return ResponseEntity.ok().body(messageDTO);
     }
 
@@ -60,10 +66,11 @@ public class MemberService {
      **/
     public ResponseEntity<MessageDTO> login(MemberDTO memberDTO) {
         MessageDTO messageDTO = new MessageDTO();
-
         Optional<MemberDTO> storedMember = memberRepository.findByUserId(memberDTO.getUserId());
 
-        if(storedMember.isPresent()) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        if(storedMember.isPresent() & encoder.matches(memberDTO.getPassword(), storedMember.get().getPassword())) {
             messageDTO.setStatus("success");
             messageDTO.setMessage("로그인 성공");
         }else{
