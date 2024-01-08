@@ -10,4 +10,6 @@ public class MessageDTO {
     private String message;
 
     private Object data;
+
+    private String token;
 }

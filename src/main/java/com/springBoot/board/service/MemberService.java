@@ -2,7 +2,10 @@ package com.springBoot.board.service;
 import com.springBoot.board.controller.dto.MemberDTO;
 import com.springBoot.board.controller.dto.MessageDTO;
 import com.springBoot.board.domain.Member;
+import com.springBoot.board.jwt.JwtTokenProvider;
 import com.springBoot.board.repository.MemberRepository;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,6 +21,9 @@ public class MemberService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     /**
      * 회원가입
@@ -70,9 +76,14 @@ public class MemberService {
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
+        String token;
+
         if(storedMember.isPresent() & encoder.matches(memberDTO.getPassword(), storedMember.get().getPassword())) {
+            token = jwtTokenProvider.createToken(memberDTO.getUserId(), memberDTO.getName());
+
             messageDTO.setStatus("success");
             messageDTO.setMessage("로그인 성공");
+            messageDTO.setToken(token);
         }else{
             messageDTO.setStatus("error");
             messageDTO.setMessage("등록된 회원이 없습니다.");
@@ -115,7 +126,9 @@ public class MemberService {
 
         Optional<MemberDTO> storedMember = memberRepository.searchByPassword(memberDTO.getPassword());
 
-        if(storedMember.isPresent()){
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        if(storedMember.isPresent() & encoder.matches(memberDTO.getPassword(), storedMember.get().getPassword())){
             messageDTO.setStatus("success");
             messageDTO.setMessage("로그인 성공");
             messageDTO.setData(storedMember);
