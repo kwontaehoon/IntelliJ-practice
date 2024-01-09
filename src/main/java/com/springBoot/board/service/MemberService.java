@@ -6,6 +6,7 @@ import com.springBoot.board.jwt.JwtTokenProvider;
 import com.springBoot.board.repository.MemberRepository;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,16 +15,20 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService {
 
     @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private final MessageDTO messageDTO;
 
     /**
      * 회원가입
@@ -32,7 +37,6 @@ public class MemberService {
      * @return responseEntity
      **/
     public ResponseEntity<MessageDTO> signup(MemberDTO memberDTO) {
-        MessageDTO messageDTO = new MessageDTO();
 
         Member member = Member.builder()
                 .userId(memberDTO.getUserId())
@@ -51,10 +55,9 @@ public class MemberService {
      * @params userId
      * @return reseponseEntity
      **/
-    public ResponseEntity<MessageDTO> idCheck(String userId) {
-        MessageDTO messageDTO = new MessageDTO();
+    public ResponseEntity<MessageDTO> idCheck(MemberDTO memberDTO) {
 
-        if(memberRepository.existsByUserId(userId)){
+        if(memberRepository.existsByUserId(memberDTO.getUserId())){
             messageDTO.setStatus("error");
             messageDTO.setMessage("중복된 아이디가 있습니다.");
         }else {
@@ -71,7 +74,7 @@ public class MemberService {
      * @return
      **/
     public ResponseEntity<MessageDTO> login(MemberDTO memberDTO) {
-        MessageDTO messageDTO = new MessageDTO();
+
         Optional<MemberDTO> storedMember = memberRepository.findByUserId(memberDTO.getUserId());
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -99,13 +102,12 @@ public class MemberService {
      * @return
      **/
     public ResponseEntity<MessageDTO> idSearch(MemberDTO memberDTO) {
-        MessageDTO messageDTO = new MessageDTO();
 
-        Optional<MemberDTO> storedMember = memberRepository.searchByUserId(memberDTO.getUserId());
+        Optional<MemberDTO> storedMember = memberRepository.findByEmail(memberDTO.getEmail());
 
-        if(storedMember.isPresent()){
+        if(storedMember.isPresent() && memberDTO.getName() == storedMember.get().getName()){
             messageDTO.setStatus("success");
-            messageDTO.setMessage("로그인 성공");
+            messageDTO.setMessage("아이디 찾기 성공");
             messageDTO.setData(storedMember);
         }else{
             messageDTO.setStatus("error");
@@ -122,15 +124,14 @@ public class MemberService {
      * @return
      **/
     public ResponseEntity<MessageDTO> pwdSearch(MemberDTO memberDTO) {
-        MessageDTO messageDTO = new MessageDTO();
 
-        Optional<MemberDTO> storedMember = memberRepository.searchByPassword(memberDTO.getPassword());
+        Optional<MemberDTO> storedMember = memberRepository.findByUserId(memberDTO.getUserId());
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        if(storedMember.isPresent() & encoder.matches(memberDTO.getPassword(), storedMember.get().getPassword())){
+        if(storedMember.isPresent()){
             messageDTO.setStatus("success");
-            messageDTO.setMessage("로그인 성공");
+            messageDTO.setMessage("비밀번호 찾기 성공");
             messageDTO.setData(storedMember);
         }else{
             messageDTO.setStatus("error");

@@ -22,7 +22,7 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public String join(MemberDTO memberDTO) {
+    public String join(@RequestBody MemberDTO memberDTO) {
         return "string";
     }
 
@@ -43,9 +43,9 @@ public class MemberController {
      * @params id
      * @return responseEntity
      **/
-    @GetMapping("/idCheck")
-    public ResponseEntity<MessageDTO> idCheck (@RequestParam String userId) {
-        return memberService.idCheck(userId);
+    @PostMapping("/idCheck")
+    public ResponseEntity<MessageDTO> idCheck (@RequestBody MemberDTO memberDTO) {
+        return memberService.idCheck(memberDTO);
     }
 
     /**
@@ -67,7 +67,6 @@ public class MemberController {
      **/
     @PostMapping("/idSearch")
     public ResponseEntity<MessageDTO> idSearch(@RequestBody MemberDTO memberDTO) {
-        System.out.println("aaaaaaaaaaaaa: " + memberDTO);
         return memberService.idSearch(memberDTO);
     }
 
