@@ -30,7 +30,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
         // 헤더에서 JWT를 받아온다.
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
-        System.out.println("header token: " + token);
 
         // 유효한 토큰인지 확인한다.
         if (token != null && jwtTokenProvider.validateToken((token))) {
@@ -41,11 +40,4 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         }
         chain.doFilter(request, response);
     }
-
-//    private String getParseJwt(final String headerAuth) {
-//        if(StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer")) {
-//            return headerAuth.substring(7);
-//        }
-//        return null;
-//    }
 }

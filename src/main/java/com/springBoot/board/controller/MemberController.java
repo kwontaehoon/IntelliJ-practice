@@ -3,16 +3,18 @@ package com.springBoot.board.controller;
 import com.springBoot.board.controller.dto.MemberDTO;
 import com.springBoot.board.controller.dto.MessageDTO;
 import com.springBoot.board.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 public class MemberController {
 
     @Autowired
-    private MemberService memberService;
+    private final MemberService memberService;
 
     @GetMapping("/hello")
     public String getHello() {
@@ -65,6 +67,7 @@ public class MemberController {
      **/
     @PostMapping("/idSearch")
     public ResponseEntity<MessageDTO> idSearch(@RequestBody MemberDTO memberDTO) {
+        System.out.println("aaaaaaaaaaaaa: " + memberDTO);
         return memberService.idSearch(memberDTO);
     }
 

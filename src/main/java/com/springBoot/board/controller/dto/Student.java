@@ -1,42 +1,21 @@
 package com.springBoot.board.controller.dto;
 
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.ToString;
+import org.springframework.stereotype.Component;
 
 @ToString
+@Data
+@Component
 public class Student {
 
-    Integer id;
-    String name;
-    Integer grade;
+    private Integer id;
 
-    public Student(Integer id, String name, Integer grade) {
-        this.id = id;
-        this.name = name;
-        this.grade = grade;
-    }
+    private String name;
 
-    public static class StudentBuilder {
-
-        Integer id;
-        String name;
-        Integer grade;
-
-        public StudentBuilder id(Integer id) {
-            this.id = id;
-            return this;
-        }
-        public StudentBuilder name(String name) {
-            this.name = name;
-            return this;
-        }
-        public StudentBuilder grade(Integer grade) {
-            this.grade = grade;
-            return this;
-        }
-        public Student build() {
-            return new Student(id, name, grade);
-        }
-    }
-
+    private Integer grade;
 }
 

@@ -13,6 +13,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -35,9 +37,9 @@ public class SecurityConfig {
         http
                 .csrf().disable() // 웹 브라우저 위의 웹 페이지에서 동작하는 REST API에서는 동일 근원 정책에의해 보호되므로 csrf를 사용하지않는다.
                 // 위 설정을 하지않으면 post 요청 에서 403 forbidden 발생
-
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/login").permitAll()
+//                        .requestMatchers("/login").permitAll()
+//                        .requestMatchers("/admin/**").hasRole("ADMIN") // 관리자 페이지가 있으면 쓸만할듯
                         .anyRequest().permitAll()
                         .and()
                         .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
@@ -59,7 +61,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    public BCryptPasswordEncoder bCryptPasswordEncoder() { // 비밀번호 암호화
         return new BCryptPasswordEncoder();
     }
 }
