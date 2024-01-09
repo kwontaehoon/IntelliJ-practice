@@ -105,13 +105,14 @@ public class MemberService {
 
         Optional<MemberDTO> storedMember = memberRepository.findByEmail(memberDTO.getEmail());
 
-        if(storedMember.isPresent() && memberDTO.getName() == storedMember.get().getName()){
+        if(storedMember.isPresent() && memberDTO.getName().equals(storedMember.get().getName())){
             messageDTO.setStatus("success");
             messageDTO.setMessage("아이디 찾기 성공");
             messageDTO.setData(storedMember);
         }else{
             messageDTO.setStatus("error");
             messageDTO.setMessage("등록된 회원이 없습니다.");
+            messageDTO.setData(null);
         }
 
         return ResponseEntity.ok().body(messageDTO);
@@ -129,13 +130,14 @@ public class MemberService {
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        if(storedMember.isPresent()){
+        if(storedMember.isPresent() && memberDTO.getEmail().equals(storedMember.get().getEmail())){
             messageDTO.setStatus("success");
             messageDTO.setMessage("비밀번호 찾기 성공");
             messageDTO.setData(storedMember);
         }else{
             messageDTO.setStatus("error");
             messageDTO.setMessage("등록된 회원이 없습니다.");
+            messageDTO.setData(null);
         }
 
         return ResponseEntity.ok().body(messageDTO);
