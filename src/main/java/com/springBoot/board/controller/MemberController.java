@@ -2,6 +2,7 @@ package com.springBoot.board.controller;
 
 import com.springBoot.board.controller.dto.MemberDTO;
 import com.springBoot.board.controller.dto.MessageDTO;
+import com.springBoot.board.controller.dto.TokenDTO;
 import com.springBoot.board.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
@@ -55,7 +56,7 @@ public class MemberController {
      * @return 
      **/
     @PostMapping("/login")
-    public ResponseEntity<MessageDTO> login (@RequestBody MemberDTO memberDTO) {
+    public ResponseEntity<TokenDTO> login (@RequestBody MemberDTO memberDTO) {
         return memberService.login(memberDTO);
     }
 

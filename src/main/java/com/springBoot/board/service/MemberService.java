@@ -1,6 +1,7 @@
 package com.springBoot.board.service;
 import com.springBoot.board.controller.dto.MemberDTO;
 import com.springBoot.board.controller.dto.MessageDTO;
+import com.springBoot.board.controller.dto.TokenDTO;
 import com.springBoot.board.domain.Member;
 import com.springBoot.board.jwt.JwtTokenProvider;
 import com.springBoot.board.repository.MemberRepository;
@@ -29,6 +30,9 @@ public class MemberService {
 
     @Autowired
     private final MessageDTO messageDTO;
+
+    @Autowired
+    private final TokenDTO tokenDTO;
 
     /**
      * 회원가입
@@ -73,7 +77,7 @@ public class MemberService {
      * @params memberDTO
      * @return reseponseEntity
      **/
-    public ResponseEntity<MessageDTO> login(MemberDTO memberDTO) {
+    public ResponseEntity<TokenDTO> login(MemberDTO memberDTO) {
 
         Optional<MemberDTO> storedMember = memberRepository.findByUserId(memberDTO.getUserId());
 
@@ -81,18 +85,19 @@ public class MemberService {
 
         String token;
 
-        if(storedMember.isPresent() & encoder.matches(memberDTO.getPassword(), storedMember.get().getPassword())) {
+        if(storedMember.isPresent() && encoder.matches(memberDTO.getPassword(), storedMember.get().getPassword())) {
             token = jwtTokenProvider.createToken(memberDTO.getUserId(), memberDTO.getName());
 
-            messageDTO.setStatus("success");
-            messageDTO.setMessage("로그인 성공");
-            messageDTO.setToken(token);
+            tokenDTO.setStatus("success");
+            tokenDTO.setGrantType("Bearer");
+            tokenDTO.setAccessToken(token);
         }else{
-            messageDTO.setStatus("error");
-            messageDTO.setMessage("등록된 회원이 없습니다.");
+            tokenDTO.setStatus("not found");
+            tokenDTO.setGrantType(null);
+            tokenDTO.setAccessToken(null);
         }
 
-        return ResponseEntity.ok().body(messageDTO);
+        return ResponseEntity.ok().body(tokenDTO);
     }
 
     /**
@@ -127,8 +132,6 @@ public class MemberService {
     public ResponseEntity<MessageDTO> pwdSearch(MemberDTO memberDTO) {
 
         Optional<MemberDTO> storedMember = memberRepository.findByUserId(memberDTO.getUserId());
-
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         if(storedMember.isPresent() && memberDTO.getEmail().equals(storedMember.get().getEmail())){
             messageDTO.setStatus("success");
