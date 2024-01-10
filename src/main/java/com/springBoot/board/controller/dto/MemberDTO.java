@@ -7,6 +7,7 @@ import lombok.Data;
 @Entity
 @Data
 @Builder
+@Table(name = "member")
 public class MemberDTO {
 
     @Id

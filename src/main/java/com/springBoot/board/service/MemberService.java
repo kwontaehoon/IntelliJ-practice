@@ -52,7 +52,7 @@ public class MemberService {
     /**
      * 중복 아이디 확인
      *
-     * @params userId
+     * @params memberDTO
      * @return reseponseEntity
      **/
     public ResponseEntity<MessageDTO> idCheck(MemberDTO memberDTO) {
@@ -70,8 +70,8 @@ public class MemberService {
     /**
      * 로그인
      *
-     * @params
-     * @return
+     * @params memberDTO
+     * @return reseponseEntity
      **/
     public ResponseEntity<MessageDTO> login(MemberDTO memberDTO) {
 
@@ -98,8 +98,8 @@ public class MemberService {
     /**
      * 아이디 찾기
      *
-     * @params
-     * @return
+     * @params memberDTO
+     * @return responseEntity
      **/
     public ResponseEntity<MessageDTO> idSearch(MemberDTO memberDTO) {
 
@@ -121,8 +121,8 @@ public class MemberService {
     /**
      * 비밀번호 찾기
      *
-     * @params
-     * @return
+     * @params memberDTO
+     * @return responseEntity
      **/
     public ResponseEntity<MessageDTO> pwdSearch(MemberDTO memberDTO) {
 

@@ -1,20 +1,24 @@
 package com.springBoot.board.controller.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Entity
+@Data
+@Builder
+@AllArgsConstructor
+@Table(name = "toDoList")
 public class ToDoListDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String password;
+    private String title;
 
-    private String name;
-
-    private String email;
+    private LocalDateTime date;
 }
