@@ -1,13 +1,13 @@
 package com.springBoot.board.controller.dto;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @Builder
-@Table(name = "member")
 public class MemberDTO {
 
     @Id

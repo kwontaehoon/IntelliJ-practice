@@ -5,8 +5,6 @@ import com.springBoot.board.controller.dto.TokenDTO;
 import com.springBoot.board.domain.Member;
 import com.springBoot.board.jwt.JwtTokenProvider;
 import com.springBoot.board.repository.MemberRepository;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -79,15 +77,16 @@ public class MemberService {
      **/
     public ResponseEntity<TokenDTO> login(MemberDTO memberDTO) {
 
-        Optional<MemberDTO> storedMember = memberRepository.findByUserId(memberDTO.getUserId());
+        Optional<Member> storedMember = memberRepository.findByUserId(memberDTO.getUserId());
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         String token;
 
         if(storedMember.isPresent() && encoder.matches(memberDTO.getPassword(), storedMember.get().getPassword())) {
-            token = jwtTokenProvider.createToken(memberDTO.getUserId(), memberDTO.getName());
+            token = jwtTokenProvider.createToken(memberDTO.getId(), memberDTO.getUserId());
 
+            System.out.println("token: " + token);
             tokenDTO.setStatus("success");
             tokenDTO.setGrantType("Bearer");
             tokenDTO.setAccessToken(token);
@@ -131,7 +130,7 @@ public class MemberService {
      **/
     public ResponseEntity<MessageDTO> pwdSearch(MemberDTO memberDTO) {
 
-        Optional<MemberDTO> storedMember = memberRepository.findByUserId(memberDTO.getUserId());
+        Optional<Member> storedMember = memberRepository.findByUserId(memberDTO.getUserId());
 
         if(storedMember.isPresent() && memberDTO.getEmail().equals(storedMember.get().getEmail())){
             messageDTO.setStatus("success");

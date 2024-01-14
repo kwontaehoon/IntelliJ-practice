@@ -4,15 +4,11 @@ import com.springBoot.board.controller.dto.MessageDTO;
 import com.springBoot.board.controller.dto.ToDoListDTO;
 import com.springBoot.board.domain.ToDoList;
 import com.springBoot.board.repository.ToDoListRepository;
-import jakarta.persistence.EntityManager;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -83,5 +79,16 @@ public class TodoListService {
         }
 
         return ResponseEntity.ok().body(messageDTO);
+    }
+
+    /**
+     * test
+     *
+     * @params
+     * @return
+     **/
+
+    public Integer mapperTest (Integer id) {
+        return 123;
     }
 }
