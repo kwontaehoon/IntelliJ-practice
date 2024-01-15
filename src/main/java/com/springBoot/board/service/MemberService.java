@@ -86,7 +86,6 @@ public class MemberService {
         if(storedMember.isPresent() && encoder.matches(memberDTO.getPassword(), storedMember.get().getPassword())) {
             token = jwtTokenProvider.createToken(memberDTO.getId(), memberDTO.getUserId());
 
-            System.out.println("token: " + token);
             tokenDTO.setStatus("success");
             tokenDTO.setGrantType("Bearer");
             tokenDTO.setAccessToken(token);

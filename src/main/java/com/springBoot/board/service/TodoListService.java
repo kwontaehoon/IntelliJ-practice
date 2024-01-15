@@ -2,7 +2,9 @@ package com.springBoot.board.service;
 
 import com.springBoot.board.controller.dto.MessageDTO;
 import com.springBoot.board.controller.dto.ToDoListDTO;
+import com.springBoot.board.domain.Member;
 import com.springBoot.board.domain.ToDoList;
+import com.springBoot.board.mapper.ListMapper;
 import com.springBoot.board.repository.ToDoListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,18 +24,29 @@ public class TodoListService {
     @Autowired
     private final MessageDTO messageDTO;
 
+    @Autowired
+    private  final ListMapper listMapper;
+
     /**
      * 리스트
      *
      * @params toDoListDTO
      * @return List
      **/
-    public List<ToDoList> list () {
-        return toDoListRepository.findAll();
+    public ResponseEntity<MessageDTO> list (String userId) {
+
+        Optional<Member> storedList = toDoListRepository.findByUserId(userId);
+
+        if(storedList.isPresent()){
+            messageDTO.setData(storedList.get());
+        }else{
+            messageDTO.setData(toDoListRepository.findAll());
+        }
+        return ResponseEntity.ok().body(messageDTO);
     }
 
     /**
-     * 글 생성
+     * 글 작성
      *
      * @params toDoListDTO
      * @return responseEntity
@@ -88,7 +101,10 @@ public class TodoListService {
      * @return
      **/
 
-    public Integer mapperTest (Integer id) {
-        return 123;
+    public ResponseEntity<MessageDTO> mapperTest () {
+        Optional<Member> storedMember = listMapper.getUserId(2);
+        System.out.println("test: " + storedMember);
+        messageDTO.setData(storedMember);
+        return ResponseEntity.ok().body(messageDTO);
     }
 }

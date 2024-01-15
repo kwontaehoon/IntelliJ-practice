@@ -32,23 +32,11 @@ public class TodoListController {
     @Autowired
     private final JwtTokenProvider jwtTokenProvider;
 
-    public static String base64UrlDecode(String input) {
-        String base64 = input.replace('-', '+').replace('_', '/');
-        byte[] decodedBytes = Base64.getDecoder().decode(base64);
-        return new String(decodedBytes, StandardCharsets.UTF_8);
-    }
-
     // 리스트
     @GetMapping("/list")
-    public List<ToDoList> list (@RequestHeader("Authorization") String token, HttpServletRequest request) {
-        System.out.println("token: " + token);
+    public ResponseEntity<MessageDTO> list (@RequestHeader(value = "Authorization", required = false) String token, HttpServletRequest request) {
         String userId = jwtTokenProvider.resolveToken(request);
-        System.out.println("userId: " + userId);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        System.out.println("aaaaaaaaaaaaaa: "+base64UrlDecode(userId));
-
-        return todoListService.list();
+        return todoListService.list(jwtTokenProvider.getUserPk(userId));
     }
 
     // 글 작성
@@ -70,8 +58,8 @@ public class TodoListController {
     }
 
     // mapper 테스트
-    @PostMapping("/mapperTest")
-    public Integer mapperTest (@RequestBody Integer id) {
-        return todoListService.mapperTest(id);
+    @GetMapping("/mapperTest")
+    public ResponseEntity<MessageDTO> mapperTest () {
+        return todoListService.mapperTest();
     }
 }

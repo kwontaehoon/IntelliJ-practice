@@ -16,7 +16,10 @@ public class ToDoListDTO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private String userId;
+
     private String title;
 
     private LocalDateTime date;
+
 }

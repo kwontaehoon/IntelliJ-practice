@@ -56,12 +56,30 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-//    private UserDetails buildUserDetailsFromToken(String token) {
-//        String userId = getUserPk(token);
-//    }
+    // 토큰 복호화
+    public static String base64UrlDecode(String input) {
+        // '+'를 '-'로, '/'를 '_'로 치환
+        String base64 = input.replace('-', '+').replace('_', '/');
 
+        // Base64 디코딩
+        byte[] decodedBytes = Base64.getDecoder().decode(base64);
+        return new String(decodedBytes);
+    }
+
+    // 토큰 header / payload / signature 나누기
     public String getUserPk(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        if(token == null){
+            return null;
+        }else{
+            token = token.replace("Bearer ", "");
+
+            // JWT 토큰은 '.'으로 구분된 세 부분으로 구성되어 있음
+            String[] parts = token.split("\\.");
+            // payload 부분은 두 번째 부분
+            String payload = parts.length > 1 ? parts[1] : "";
+
+            return base64UrlDecode(payload);
+        }
     }
 
     public String resolveToken(HttpServletRequest request) {
@@ -82,9 +100,9 @@ public class JwtTokenProvider {
         }
     }
 
-//    // 토큰 만료 여부 확인
-//    private boolean isTokenExpired(String token) {
-//        Date expiration = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getExpiration();
-//        return expiration.before(new Date());
-//    }
+    // 토큰 만료 여부 확인
+    private boolean isTokenExpired(String token) {
+        Date expiration = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getExpiration();
+        return expiration.before(new Date());
+    }
 }
