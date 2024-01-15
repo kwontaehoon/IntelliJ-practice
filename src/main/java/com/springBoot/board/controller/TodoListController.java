@@ -34,15 +34,14 @@ public class TodoListController {
 
     // 리스트
     @GetMapping("/list")
-    public ResponseEntity<MessageDTO> list (@RequestHeader(value = "Authorization", required = false) String token, HttpServletRequest request) {
-        String userId = jwtTokenProvider.resolveToken(request);
-        return todoListService.list(jwtTokenProvider.getUserPk(userId));
+    public ResponseEntity<MessageDTO> list (HttpServletRequest request) {
+        return todoListService.list(jwtTokenProvider.getUserPk(jwtTokenProvider.resolveToken(request)));
     }
 
     // 글 작성
     @PostMapping("/write")
-    public ResponseEntity<MessageDTO> toDoWrite (@RequestBody ToDoListDTO toDoListDTO) {
-        return todoListService.toDoWrite(toDoListDTO);
+    public ResponseEntity<MessageDTO> toDoWrite (@RequestBody ToDoListDTO toDoListDTO, HttpServletRequest request) {
+        return todoListService.toDoWrite(toDoListDTO, jwtTokenProvider.getUserPk(jwtTokenProvider.resolveToken(request)));
     }
 
     // 글 삭제

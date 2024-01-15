@@ -1,10 +1,16 @@
 package com.springBoot.board.jwt;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.springBoot.board.controller.dto.ToDoListDTO;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.parser.JSONParser;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +23,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.util.StringUtils;
+import org.json.simple.JSONObject;
 
 import java.util.Date;
 
@@ -77,8 +84,15 @@ public class JwtTokenProvider {
             String[] parts = token.split("\\.");
             // payload 부분은 두 번째 부분
             String payload = parts.length > 1 ? parts[1] : "";
+            try {
 
-            return base64UrlDecode(payload);
+            ObjectMapper mapper = new ObjectMapper();
+
+                JsonNode node = mapper.readTree(base64UrlDecode(payload));
+                return node.get("userId").asText();
+            } catch (JsonProcessingException e) {
+                return base64UrlDecode(payload);
+            }
         }
     }
 

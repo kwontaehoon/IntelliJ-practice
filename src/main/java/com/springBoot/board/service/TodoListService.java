@@ -1,5 +1,8 @@
 package com.springBoot.board.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springBoot.board.controller.dto.MessageDTO;
 import com.springBoot.board.controller.dto.ToDoListDTO;
 import com.springBoot.board.domain.Member;
@@ -7,6 +10,9 @@ import com.springBoot.board.domain.ToDoList;
 import com.springBoot.board.mapper.ListMapper;
 import com.springBoot.board.repository.ToDoListRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -35,12 +41,10 @@ public class TodoListService {
      **/
     public ResponseEntity<MessageDTO> list (String userId) {
 
-        Optional<Member> storedList = toDoListRepository.findByUserId(userId);
-
-        if(storedList.isPresent()){
-            messageDTO.setData(storedList.get());
-        }else{
+        if(userId == null){
             messageDTO.setData(toDoListRepository.findAll());
+        }else{
+            messageDTO.setData(toDoListRepository.findByUserId(userId));
         }
         return ResponseEntity.ok().body(messageDTO);
     }
@@ -51,11 +55,12 @@ public class TodoListService {
      * @params toDoListDTO
      * @return responseEntity
      **/
-    public ResponseEntity<MessageDTO> toDoWrite (ToDoListDTO toDoListDTO) {
+    public ResponseEntity<MessageDTO> toDoWrite (ToDoListDTO toDoListDTO, String userId) {
 
         ToDoList toDoList = ToDoList.builder()
                 .title(toDoListDTO.getTitle())
                 .date(LocalDateTime.now())
+                .userId(userId)
                 .build();
         toDoListRepository.save(toDoList);
 
