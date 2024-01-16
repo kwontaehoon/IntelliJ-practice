@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Type;
+import org.hibernate.type.descriptor.jdbc.TinyIntAsSmallIntJdbcType;
 
 import java.time.LocalDateTime;
 
@@ -24,5 +27,9 @@ public class ToDoList {
 
     private String title;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime date;
+
+    @Column(columnDefinition = "TINYINT(1)")
+    private Boolean finish;
 }

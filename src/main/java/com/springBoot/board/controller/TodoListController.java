@@ -7,6 +7,7 @@ import com.springBoot.board.jwt.JwtTokenProvider;
 import com.springBoot.board.service.TodoListService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -54,6 +55,12 @@ public class TodoListController {
     @PostMapping("/modify")
     public ResponseEntity<MessageDTO> toDoModify (@RequestBody ToDoListDTO toDoListDTO) {
         return todoListService.toDoModify(toDoListDTO);
+    }
+
+    // 글 완료
+    @PostMapping("/finish")
+    public ResponseEntity<MessageDTO> toDoCheck (@RequestBody ToDoListDTO toDoListDTO) {
+        return todoListService.toDoCheck(toDoListDTO);
     }
 
     // mapper 테스트

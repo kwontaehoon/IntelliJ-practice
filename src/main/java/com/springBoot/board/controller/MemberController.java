@@ -5,6 +5,7 @@ import com.springBoot.board.controller.dto.MessageDTO;
 import com.springBoot.board.controller.dto.TokenDTO;
 import com.springBoot.board.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.antlr.v4.runtime.Token;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class MemberController {
      * @return responseEntity
      **/
     @PostMapping("/signup")
-    public ResponseEntity<MessageDTO> signup (@RequestBody MemberDTO memberDTO) {
+    public ResponseEntity<TokenDTO> signup (@RequestBody MemberDTO memberDTO) {
         return  memberService.signup(memberDTO);
     }
 

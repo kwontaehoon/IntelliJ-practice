@@ -38,7 +38,9 @@ public class MemberService {
      * @params memberDTO
      * @return responseEntity
      **/
-    public ResponseEntity<MessageDTO> signup(MemberDTO memberDTO) {
+    public ResponseEntity<TokenDTO> signup(MemberDTO memberDTO) {
+
+        String token = jwtTokenProvider.createToken(memberDTO.getId(), memberDTO.getUserId());
 
         Member member = Member.builder()
                 .userId(memberDTO.getUserId())
@@ -48,7 +50,7 @@ public class MemberService {
                 .build();
         memberRepository.save(member);
 
-        return ResponseEntity.ok().body(messageDTO);
+        return ResponseEntity.ok().body(new TokenDTO("success", "bearer", token));
     }
 
     /**
@@ -106,14 +108,14 @@ public class MemberService {
      **/
     public ResponseEntity<MessageDTO> idSearch(MemberDTO memberDTO) {
 
-        Optional<MemberDTO> storedMember = memberRepository.findByEmail(memberDTO.getEmail());
+        Optional<Member> storedMember = memberRepository.findByEmail(memberDTO.getEmail());
 
         if(storedMember.isPresent() && memberDTO.getName().equals(storedMember.get().getName())){
             messageDTO.setStatus("success");
             messageDTO.setMessage("아이디 찾기 성공");
             messageDTO.setData(storedMember);
         }else{
-            messageDTO.setStatus("error");
+            messageDTO.setStatus("not found");
             messageDTO.setMessage("등록된 회원이 없습니다.");
             messageDTO.setData(null);
         }

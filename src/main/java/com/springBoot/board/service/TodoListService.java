@@ -40,6 +40,8 @@ public class TodoListService {
      * @return List
      **/
     public ResponseEntity<MessageDTO> list (String userId) {
+        messageDTO.setStatus("success");
+        messageDTO.setMessage("조회 성공");
 
         if(userId == null){
             messageDTO.setData(toDoListRepository.findAll());
@@ -61,6 +63,7 @@ public class TodoListService {
                 .title(toDoListDTO.getTitle())
                 .date(LocalDateTime.now())
                 .userId(userId)
+                .finish(false)
                 .build();
         toDoListRepository.save(toDoList);
 
@@ -97,6 +100,27 @@ public class TodoListService {
         }
 
         return ResponseEntity.ok().body(messageDTO);
+    }
+
+    /**
+     * 글 완료
+     *
+     * @params
+     * @return
+     **/
+
+    public ResponseEntity<MessageDTO> toDoCheck (ToDoListDTO toDoListDTO) {
+
+        Optional<ToDoList> storedList = toDoListRepository.findById(toDoListDTO.getId());
+
+        if(storedList.isPresent()){
+            ToDoList updateList = storedList.get();
+
+            updateList.setFinish(!updateList.getFinish());
+
+            toDoListRepository.save(updateList);
+        }
+        return ResponseEntity.ok(messageDTO);
     }
 
     /**

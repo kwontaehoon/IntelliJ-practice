@@ -20,6 +20,6 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 //    Optional<Member> findByUserId(@Param("user_id") String userId); // nativeQuery
 
     @Query(value = "SELECT m FROM Member m WHERE m.email = :email") // JPQL
-    Optional<MemberDTO> findByEmail(@Param("email") String email);
+    Optional<Member> findByEmail(@Param("email") String email);
 
 }

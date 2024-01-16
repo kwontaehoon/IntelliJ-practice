@@ -20,6 +20,9 @@ public class ToDoListDTO {
 
     private String title;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime date;
 
+    @Column(columnDefinition = "TINYINT(1)")
+    private Boolean finish;
 }
