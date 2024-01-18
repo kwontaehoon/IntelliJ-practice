@@ -6,11 +6,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springBoot.board.controller.dto.MessageDTO;
 import com.springBoot.board.controller.dto.ToDoListDTO;
 import com.springBoot.board.domain.Member;
+import com.springBoot.board.domain.Orders;
 import com.springBoot.board.domain.ToDoList;
 import com.springBoot.board.mapper.ListMapper;
+import com.springBoot.board.mapper.SQLPractice1;
+import com.springBoot.board.repository.OrdersRepository;
 import com.springBoot.board.repository.ToDoListRepository;
+import jakarta.persistence.criteria.Order;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import org.apache.coyote.Response;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +33,16 @@ public class TodoListService {
     private final ToDoListRepository toDoListRepository;
 
     @Autowired
+    private final OrdersRepository ordersRepository;
+
+    @Autowired
     private final MessageDTO messageDTO;
 
     @Autowired
-    private  final ListMapper listMapper;
+    private final ListMapper listMapper;
+
+    @Autowired
+    private final SQLPractice1 sqlPractice1;
 
     /**
      * 리스트
@@ -131,9 +142,38 @@ public class TodoListService {
      **/
 
     public ResponseEntity<MessageDTO> mapperTest () {
-        Optional<Member> storedMember = listMapper.getUserId(2);
-        System.out.println("test: " + storedMember);
+        List<Member> storedMember = listMapper.getUserId(2);
         messageDTO.setData(storedMember);
+        return ResponseEntity.ok().body(messageDTO);
+    }
+
+    /**
+     * sqlPractice
+     *
+     * @params
+     * @return
+     **/
+
+    public ResponseEntity<MessageDTO> sqlPractice () {
+//        List<Orders> stored = sqlPractice1.test1("gju04195");
+        List<Orders> stored = ordersRepository.sqlPractice(3);
+        System.out.println("stored: " + stored);
+        messageDTO.setData(stored);
+
+        return ResponseEntity.ok().body(messageDTO);
+    }
+
+    /**
+     * sqlPractice2
+     *
+     * @params
+     * @return
+     **/
+
+    public ResponseEntity<MessageDTO> sqlPratice2 () {
+        List<Orders> stored = sqlPractice1.test2("taehoon");
+        System.out.println("stored: " + stored);
+
         return ResponseEntity.ok().body(messageDTO);
     }
 }

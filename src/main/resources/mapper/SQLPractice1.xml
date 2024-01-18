@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springBoot.board.mapper.SQLPractice1">
+
+    <select id="test1" resultType="com.springBoot.board.controller.dto.OrdersDTO">
+        SELECT o.*
+        FROM orders o
+            JOIN member m ON o.user_id = m.user_id
+        WHERE o.user_id = #{userId}
+    </select>
+
+<!--    <select id="test2" resultType="com.springBoot.board.controller.dto.OrdersDTO">-->
+<!--        SELECT *-->
+<!--        FROM orders o-->
+<!--        WHERE o.user_id = #{user_id}-->
+<!--    </select>-->
+</mapper>

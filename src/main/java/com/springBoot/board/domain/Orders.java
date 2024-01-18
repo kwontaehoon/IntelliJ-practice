@@ -11,22 +11,21 @@ import lombok.RequiredArgsConstructor;
 @Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Member {
+public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer orderId;
+
+    @Column(nullable = false)
+    private String itemId;
+
+    @Column(nullable = false)
+    private Integer itemCount;
+
+    @Column(nullable = false)
+    private String itemName;
 
     @Column(nullable = false)
     private String userId;
-
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
-    private String email;
-
 }

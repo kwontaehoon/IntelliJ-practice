@@ -12,17 +12,13 @@ import java.time.LocalDateTime;
 @Builder
 public class ToDoListDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String userId;
 
     private String title;
 
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime date;
 
-    @Column(columnDefinition = "TINYINT(1)")
     private Boolean finish;
 }

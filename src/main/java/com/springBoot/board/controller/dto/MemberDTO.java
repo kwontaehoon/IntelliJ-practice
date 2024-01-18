@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MemberDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String userId;
