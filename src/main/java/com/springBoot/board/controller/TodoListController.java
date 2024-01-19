@@ -74,4 +74,10 @@ public class TodoListController {
     public ResponseEntity<MessageDTO> sqlPractice() {
         return todoListService.sqlPractice();
     }
+
+    // sql 테스트2
+    @GetMapping("/sqlPractice2")
+    public ResponseEntity<MessageDTO> sqlPractice2() {
+        return todoListService.sqlPratice2();
+    }
 }

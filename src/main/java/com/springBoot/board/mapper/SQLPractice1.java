@@ -10,7 +10,7 @@ import java.util.Optional;
 @Mapper
 public interface SQLPractice1 {
 
-    List<Orders> test1 (@Param("userId") String userId);
+    List<Orders> test1 ();
 
-    List<Orders> test2 (@Param("userId") String userId);
+    List<Orders> test2 (@Param("memberId") String userId);
 }

@@ -40,7 +40,7 @@ public class MemberService {
      **/
     public ResponseEntity<TokenDTO> signup(MemberDTO memberDTO) {
 
-        String token = jwtTokenProvider.createToken(memberDTO.getId(), memberDTO.getUserId());
+        String token = jwtTokenProvider.createToken(memberDTO.getMemberId(), memberDTO.getUserId());
 
         Member member = Member.builder()
                 .userId(memberDTO.getUserId())
@@ -86,7 +86,7 @@ public class MemberService {
         String token;
 
         if(storedMember.isPresent() && encoder.matches(memberDTO.getPassword(), storedMember.get().getPassword())) {
-            token = jwtTokenProvider.createToken(memberDTO.getId(), memberDTO.getUserId());
+            token = jwtTokenProvider.createToken(memberDTO.getMemberId(), memberDTO.getUserId());
 
             tokenDTO.setStatus("success");
             tokenDTO.setGrantType("Bearer");

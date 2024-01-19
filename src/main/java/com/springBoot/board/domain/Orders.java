@@ -26,6 +26,7 @@ public class Orders {
     @Column(nullable = false)
     private String itemName;
 
-    @Column(nullable = false)
-    private String userId;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 }

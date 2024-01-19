@@ -155,8 +155,9 @@ public class TodoListService {
      **/
 
     public ResponseEntity<MessageDTO> sqlPractice () {
-//        List<Orders> stored = sqlPractice1.test1("gju04195");
-        List<Orders> stored = ordersRepository.sqlPractice(3);
+        List<Orders> stored = sqlPractice1.test1();
+//        List<Orders> stored = ordersRepository.sqlPractice(3);
+//        List<Orders> stored = ordersRepository.findAll();
         System.out.println("stored: " + stored);
         messageDTO.setData(stored);
 
@@ -171,8 +172,9 @@ public class TodoListService {
      **/
 
     public ResponseEntity<MessageDTO> sqlPratice2 () {
-        List<Orders> stored = sqlPractice1.test2("taehoon");
+        List<Orders> stored = ordersRepository.sqlPractice();
         System.out.println("stored: " + stored);
+        messageDTO.setData(stored);
 
         return ResponseEntity.ok().body(messageDTO);
     }

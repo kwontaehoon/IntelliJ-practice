@@ -1,10 +1,14 @@
 package com.springBoot.board.domain;
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.Order;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,7 +19,8 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "member_id")
+    private Integer memberId;
 
     @Column(nullable = false)
     private String userId;
@@ -28,5 +33,4 @@ public class Member {
 
     @Column(nullable = false)
     private String email;
-
 }

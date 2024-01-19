@@ -7,6 +7,6 @@
     <select id="getUserId" resultType="com.springBoot.board.controller.dto.MemberDTO">
         select *
         from member m
-        where m.id = #{id}
+        where m.member_id = #{id}
     </select>
 </mapper>

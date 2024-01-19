@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface OrdersRepository extends JpaRepository<Orders, Integer> {
 
-    @Query("select o from Orders o join Member m on o.userId = m.userId where o.orderId = :orderId")
-    List<Orders> sqlPractice(@Param("orderId") Integer orderId);
+//    @Query("select o from Orders o join Member m on o.memberId = m.memberId where o.orderId = :orderId")
+    @Query("select o from Orders o")
+    List<Orders> sqlPractice();
 }
