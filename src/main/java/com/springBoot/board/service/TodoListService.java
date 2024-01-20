@@ -7,9 +7,11 @@ import com.springBoot.board.controller.dto.MessageDTO;
 import com.springBoot.board.controller.dto.ToDoListDTO;
 import com.springBoot.board.domain.Member;
 import com.springBoot.board.domain.Orders;
+import com.springBoot.board.domain.Team;
 import com.springBoot.board.domain.ToDoList;
 import com.springBoot.board.mapper.ListMapper;
 import com.springBoot.board.mapper.SQLPractice1;
+import com.springBoot.board.repository.MemberRepository;
 import com.springBoot.board.repository.OrdersRepository;
 import com.springBoot.board.repository.ToDoListRepository;
 import jakarta.persistence.criteria.Order;
@@ -28,6 +30,9 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class TodoListService {
+
+    @Autowired
+    private final MemberRepository memberRepository;
 
     @Autowired
     private final ToDoListRepository toDoListRepository;
@@ -141,9 +146,10 @@ public class TodoListService {
      * @return
      **/
 
-    public ResponseEntity<MessageDTO> mapperTest () {
-        List<Member> storedMember = listMapper.getUserId(2);
-        messageDTO.setData(storedMember);
+    public ResponseEntity<MessageDTO> mapperTest () { // member
+        List<Member> storedMemberMybatis = listMapper.getUserId(2);
+        List<Member> storedMember = memberRepository.findAll();
+        messageDTO.setData(storedMemberMybatis);
         return ResponseEntity.ok().body(messageDTO);
     }
 
@@ -154,11 +160,8 @@ public class TodoListService {
      * @return
      **/
 
-    public ResponseEntity<MessageDTO> sqlPractice () {
-        List<Orders> stored = sqlPractice1.test1();
-//        List<Orders> stored = ordersRepository.sqlPractice(3);
-//        List<Orders> stored = ordersRepository.findAll();
-        System.out.println("stored: " + stored);
+    public ResponseEntity<MessageDTO> sqlTest () { // team
+        List<Team> stored = sqlPractice1.test1();
         messageDTO.setData(stored);
 
         return ResponseEntity.ok().body(messageDTO);
@@ -171,7 +174,7 @@ public class TodoListService {
      * @return
      **/
 
-    public ResponseEntity<MessageDTO> sqlPratice2 () {
+    public ResponseEntity<MessageDTO> sqlTest2 () { // order
         List<Orders> stored = ordersRepository.sqlPractice();
         System.out.println("stored: " + stored);
         messageDTO.setData(stored);

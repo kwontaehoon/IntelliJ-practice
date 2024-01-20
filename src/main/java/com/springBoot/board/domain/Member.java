@@ -33,4 +33,8 @@ public class Member {
 
     @Column(nullable = false)
     private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
 }
